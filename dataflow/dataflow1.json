@@ -1,0 +1,32 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable2",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DerivedColumn1"
+				}
+			],
+			"script": "source(output(\n\t\taccount_id as integer,\n\t\tdistrict_id as integer,\n\t\tfrequency as string,\n\t\tdate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> source1\nsource1 derive(a_insert_ts = currentTimestamp(),\n\t\tstmnt_frequency = case(frequency==\"POPLATEK MESICNE\",\"MONTHY ISSUANCE (MI)\",frequency==\"POPLATEK TYDNE\",\"WEEKLY ISSUANCE (WI)\",\"ISSUANCE AFTER TRANSACTION (TI)\"),\n\t\tcreation_date = toDate(concat(\"19\",date),'yyyyMMdd')) ~> DerivedColumn1\nDerivedColumn1 sink(input(\n\t\taccount_id as integer,\n\t\tdistrict_id as integer,\n\t\tstmnt_frequency as string,\n\t\tcreation_date as date,\n\t\ta_insert_ts as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tmapColumn(\n\t\taccount_id,\n\t\tdistrict_id,\n\t\tstmnt_frequency,\n\t\tcreation_date,\n\t\ta_insert_ts\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> sink1"
+		}
+	}
+}

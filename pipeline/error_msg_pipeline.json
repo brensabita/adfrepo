@@ -1,0 +1,55 @@
+{
+	"name": "error_msg_pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Stored procedure1",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "test_sp"
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSqldbconnection",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Stored procedure1",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "error_msg",
+					"value": {
+						"value": "@activity('Stored procedure1').Error.message",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"error_msg": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-04-26T15:50:56Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,43 @@
+{
+	"name": "Ref_transcation",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqldbconnection",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "trans_type_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "trans_type",
+				"type": "varchar"
+			},
+			{
+				"name": "trans_mode",
+				"type": "varchar"
+			},
+			{
+				"name": "trans_description",
+				"type": "varchar"
+			},
+			{
+				"name": "a_insert_ts",
+				"type": "date"
+			},
+			{
+				"name": "a_update_ts",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"schema": "cust_dw",
+			"table": "ref_transaction_type"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

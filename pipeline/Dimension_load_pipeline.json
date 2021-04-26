@@ -1,0 +1,102 @@
+{
+	"name": "Dimension_load_pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "lkp_a_metadata_deltamerge",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select [target_tbname] from [cust_abc].[a_metadata_deltamerge];",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "azuredimensionload",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "lkp_a_metadata_deltamerge",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('lkp_a_metadata_deltamerge').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "sp_usp_deltamerge_scd1",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[cust_abc].[usp_deltamerge_scd1]",
+								"storedProcedureParameters": {
+									"merge_msg": {
+										"value": "' '",
+										"type": "String"
+									},
+									"rowsRead": {
+										"value": "30",
+										"type": "Int64"
+									},
+									"rowsWritten": {
+										"value": "30",
+										"type": "Int64"
+									},
+									"trgschname": {
+										"value": "cust_dw",
+										"type": "String"
+									},
+									"trgtblname": {
+										"value": {
+											"value": "@item().target_tbname",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "AzureSqlDatabase2",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2021-04-22T10:48:16Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

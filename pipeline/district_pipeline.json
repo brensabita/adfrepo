@@ -1,0 +1,254 @@
+{
+	"name": "district_pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "a1",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "a1",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "a2",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "a2",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "a3",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "a3",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "a4",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "a4",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "a5",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "a5",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "a6",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "a6",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "a7",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "a7",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "a8",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "a8",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "a9",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "a9",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "a10",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "a10",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "a11",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "a11",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "a12",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "a12",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "a13",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "a13",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "a14",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "a14",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "a15",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "a15",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "a16",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "a16",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DelimitedText1",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "azuresqldbconnection",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2021-04-20T18:01:36Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

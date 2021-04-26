@@ -1,0 +1,36 @@
+{
+	"name": "azuresqldbconnection",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqldbconnection",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "account_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "district_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "frequency",
+				"type": "varchar"
+			},
+			{
+				"name": "date",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "cust_stage1",
+			"table": "trans"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

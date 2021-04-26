@@ -1,0 +1,54 @@
+{
+	"name": "factsql",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqldbconnection",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "trans_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "account_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "date_key",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "trans_type_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "trans_amount",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 4
+			},
+			{
+				"name": "balance_amount",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 4
+			},
+			{
+				"name": "a_insert_ts",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"schema": "cust_dw",
+			"table": "fact_cust_transactions"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

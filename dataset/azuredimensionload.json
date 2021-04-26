@@ -1,0 +1,68 @@
+{
+	"name": "azuredimensionload",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "process_id",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "subject_area",
+				"type": "nvarchar"
+			},
+			{
+				"name": "exec_seq",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "source_tbname",
+				"type": "nvarchar"
+			},
+			{
+				"name": "source_trnsfrule",
+				"type": "nvarchar"
+			},
+			{
+				"name": "source_incr_fld_nm",
+				"type": "nvarchar"
+			},
+			{
+				"name": "source_incr_prev_value ",
+				"type": "date"
+			},
+			{
+				"name": "target_tbname",
+				"type": "nvarchar"
+			},
+			{
+				"name": "join_cond",
+				"type": "nvarchar"
+			},
+			{
+				"name": "update_cols",
+				"type": "nvarchar"
+			},
+			{
+				"name": "src_cols",
+				"type": "nvarchar"
+			},
+			{
+				"name": "trg_cols",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "cust_abc",
+			"table": "a_metadata_deltamerge"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

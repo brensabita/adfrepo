@@ -1,0 +1,47 @@
+{
+	"name": "azurec_Credit",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqldbconnection",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "account_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "YearMonth",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "trans_type_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Agg_credit_amount",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 4
+			},
+			{
+				"name": "a_insert_ts",
+				"type": "date"
+			},
+			{
+				"name": "a_update_ts",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"schema": "cust_dw",
+			"table": "Agg_cust_credits"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

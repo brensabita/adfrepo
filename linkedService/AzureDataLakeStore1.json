@@ -1,0 +1,16 @@
+{
+	"name": "AzureDataLakeStore1",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureDataLakeStore",
+		"typeProperties": {
+			"dataLakeStoreUri": "https://azuredatalakegen1.azuredatalakestore.net/webhdfs/v1",
+			"servicePrincipalId": "ec7b2be1-4054-4114-bc26-98ec76ca0957",
+			"tenant": "21b441d4-3c07-489c-9b38-1db298157d22",
+			"subscriptionId": "298bfcfc-ba02-404f-9c7f-1517e5c5354a",
+			"resourceGroupName": "Rg_linoy",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZMUNBUkRBQ0NfOGY1MDk3NTctZWM5My00M2MxLTlmMDgtMjMyYzY1ODFjNTMxIg0KfQ=="
+		}
+	}
+}

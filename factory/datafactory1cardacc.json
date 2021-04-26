@@ -1,0 +1,9 @@
+{
+	"name": "datafactory1cardacc",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "8a8d6975-ec94-4402-b207-fbf9fa3174a7",
+		"tenantId": "21b441d4-3c07-489c-9b38-1db298157d22"
+	}
+}

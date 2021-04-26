@@ -1,0 +1,64 @@
+{
+	"name": "datflow_fact_agg_debit",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "factsql",
+						"type": "DatasetReference"
+					},
+					"name": "factdata1"
+				},
+				{
+					"dataset": {
+						"referenceName": "Ref_transcation",
+						"type": "DatasetReference"
+					},
+					"name": "reftranscation1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "azurec_Credit",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "azure_debit",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Join1"
+				},
+				{
+					"name": "selectfact1"
+				},
+				{
+					"name": "factderivedcolumn1"
+				},
+				{
+					"name": "Aggregate1"
+				},
+				{
+					"name": "ConditionalSplit1"
+				},
+				{
+					"name": "DerivedColumn1"
+				},
+				{
+					"name": "DerivedColumn2"
+				}
+			],
+			"script": "source(output(\n\t\ttrans_id as integer,\n\t\taccount_id as integer,\n\t\tdate_key as integer,\n\t\ttrans_type_id as integer,\n\t\ttrans_amount as decimal(15,4),\n\t\tbalance_amount as decimal(15,4),\n\t\ta_insert_ts as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> factdata1\nsource(output(\n\t\ttrans_type_id as integer,\n\t\ttrans_type as string,\n\t\ttrans_mode as string,\n\t\ttrans_description as string,\n\t\ta_insert_ts as date,\n\t\ta_update_ts as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> reftranscation1\nfactdata1, reftranscation1 join(factdata1@trans_type_id == reftranscation1@trans_type_id,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> Join1\nJoin1 select(mapColumn(\n\t\taccount_id,\n\t\tdate_key,\n\t\ttrans_type_id = factdata1@trans_type_id,\n\t\ttrans_amount,\n\t\ttrans_type\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> selectfact1\nselectfact1 derive(YearMonth = toInteger(left(toString(date_key),6))) ~> factderivedcolumn1\nfactderivedcolumn1 aggregate(groupBy(account_id,\n\t\ttrans_type,\n\t\ttrans_type_id,\n\t\tYearMonth),\n\tagg_tran_amount = sum(trans_amount)) ~> Aggregate1\nAggregate1 split(trans_type=='CREDIT',\n\tdisjoint: false) ~> ConditionalSplit1@(Credit, Debit)\nConditionalSplit1@Credit derive(a_insert_ts = currentTimestamp(),\n\t\ta_update_ts = currentTimestamp()) ~> DerivedColumn1\nConditionalSplit1@Debit derive(a_insert_ts = currentTimestamp(),\n\t\ta_update_ts = currentTimestamp()) ~> DerivedColumn2\nDerivedColumn1 sink(input(\n\t\taccount_id as integer,\n\t\tYearMonth as integer,\n\t\ttrans_type_id as integer,\n\t\tAgg_credit_amount as decimal(15,4),\n\t\ta_insert_ts as date,\n\t\ta_update_ts as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tmapColumn(\n\t\taccount_id,\n\t\tYearMonth,\n\t\ttrans_type_id,\n\t\tAgg_credit_amount = agg_tran_amount,\n\t\ta_insert_ts,\n\t\ta_update_ts\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> sink1\nDerivedColumn2 sink(input(\n\t\taccount_id as integer,\n\t\tYearMonth as integer,\n\t\ttrans_type_id as integer,\n\t\tAgg_debit_amount as decimal(15,4),\n\t\ta_insert_ts as date,\n\t\ta_update_ts as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tmapColumn(\n\t\taccount_id,\n\t\tYearMonth,\n\t\ttrans_type_id,\n\t\tAgg_debit_amount = agg_tran_amount,\n\t\ta_insert_ts,\n\t\ta_update_ts\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> sink2"
+		}
+	}
+}

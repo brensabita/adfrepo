@@ -1,0 +1,40 @@
+{
+	"name": "AzureSqlTable2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "account_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "district_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "stmnt_frequency",
+				"type": "varchar"
+			},
+			{
+				"name": "creation_date",
+				"type": "date"
+			},
+			{
+				"name": "a_insert_ts",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"schema": "CUST_STAGE2",
+			"table": "ACCOUNT"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
